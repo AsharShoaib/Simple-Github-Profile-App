@@ -8,7 +8,8 @@ ext {
             retrofit           : '2.5.0',
             room               : '2.0.0',
             espressoVersion    : '3.1.1',
-            junit              : '4.12'
+            junit              : '4.12',
+            moshi              : '1.8.0'
     ]
     androidx = [
             appcompat       : 'androidx.appcompat:appcompat:1.0.2',
@@ -24,7 +25,15 @@ ext {
     ]
     retrofit = [
             retrofit     : "com.squareup.retrofit2:retrofit:$versions.retrofit",
-            gsonConverter: "com.squareup.retrofit2:converter-gson:$versions.retrofit"
+            gsonConverter: "com.squareup.retrofit2:converter-gson:$versions.retrofit",
+            moshiConverter: "com.squareup.retrofit2:converter-moshi:$versions.retrofit",
+            logging_inteceptor: 'com.squareup.okhttp3:logging-interceptor:4.2.2',
+            retrofitAdapter: "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit"
+    ]
+    moshi = [
+            moshi         : "com.squareup.moshi:moshi:$versions.moshi",
+            moshiAdapter  : "com.squareup.moshi:moshi-adapters:$versions.moshi",
+            moshiKotlin   : "com.squareup.moshi:moshi-kotlin:$versions.moshi"
     ]
     kapt = [
             room_compiler: "androidx.room:room-compiler:$versions.room",
@@ -41,6 +50,7 @@ ext {
     androidLibs = androidx.values()
     retrofitLibs = retrofit.values()
     roomLibs = room.values()
+    moshiLibs = moshi.values()
     compilerLibs = kapt.values()
     unitTestLibs = unitTests.values()
     androidTestsLibs = androidTests.values()

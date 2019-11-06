@@ -15,6 +15,7 @@ public class RetrofitHelper {
 
     private static volatile GithubService githubService;
     private static final String RETROFIT_LOG_TAG = "OK-HTTP-LOG";
+    private static final String BASE_URL = "https://api.github.com/";
 
     public static GithubService getGithubService() {
         GithubService localRef = githubService;
@@ -32,10 +33,9 @@ public class RetrofitHelper {
     private static GithubService createGithubService() {
         Moshi moshi = new Moshi.Builder().build();
         MoshiConverterFactory moshiConverter = MoshiConverterFactory.create(moshi);
-        String baseUrl = "https://api.github.com/users";
         return createRetrofitBuilder().addConverterFactory(moshiConverter)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl(baseUrl)
+                .baseUrl(BASE_URL)
                 .build()
                 .create(GithubService.class);
     }

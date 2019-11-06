@@ -13,13 +13,18 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    
+
     buildTypes {
         release {
             minifyEnabled false
@@ -40,8 +45,13 @@ dependencies {
     implementation androidLibs
     implementation retrofitLibs
     implementation roomLibs
+    implementation rxJava
     kapt compilerLibs
+
+    implementation 'com.squareup.picasso:picasso:2.5.2'
 
     testImplementation unitTestLibs
     androidTestImplementation androidTestsLibs
+    implementation 'com.google.android.material:material:1.0.0'
+
 }

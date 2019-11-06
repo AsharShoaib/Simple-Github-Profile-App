@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Github App</string>
     <string name="action_settings">Settings</string>
+    <string name="input_hint">Enter a github user id</string>
+    <string name="instruction_text">Enter a github user id</string>
+    <string name="search_button">Search</string>
 </resources>

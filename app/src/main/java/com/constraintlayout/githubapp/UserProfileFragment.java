@@ -8,11 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.constraintlayout.githubapp.data.GithubViewModel;
-import com.constraintlayout.githubapp.data.model.GithubRepo;
 import com.constraintlayout.githubapp.data.model.GithubUser;
 import com.squareup.picasso.Picasso;
-
-import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -25,7 +22,6 @@ public class UserProfileFragment extends Fragment {
     private String searchInput;
     private GithubViewModel githubViewModel;
     private LiveData<GithubUser> userProfile;
-    private LiveData<List<GithubRepo>> userRepo;
 
     public UserProfileFragment(String searchInput) {
         this.searchInput = searchInput;
@@ -48,7 +44,6 @@ public class UserProfileFragment extends Fragment {
 
         githubViewModel = ViewModelProviders.of(this).get(GithubViewModel.class);
         userProfile = githubViewModel.getUser(searchInput);
-        userRepo = githubViewModel.getUserRepo(searchInput);
         userProfile.observe(getViewLifecycleOwner(), githubUser -> {
             TextView userName = getView().findViewById(R.id.tv_user_name);
             ImageView userProfileImage = getView().findViewById(R.id.iv_user_profile);

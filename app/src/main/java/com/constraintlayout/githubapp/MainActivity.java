@@ -64,10 +64,11 @@ public class MainActivity extends AppCompatActivity {
                 .addToBackStack(null);
         switch (tag) {
             case UserProfileFragment.TAG:
-                fragmentTransaction.replace(R.id.fragment_container_user_profile, UserProfileFragment.newInstance(searchInput),
+                fragmentTransaction.replace(R.id.fragment_container_user_profile,
+                        UserProfileFragment.newInstance(searchInput),
                         UserProfileFragment.TAG);
                 break;
-            default:
+            case UserRepoFragment.TAG:
                 fragmentTransaction.replace(R.id.fragment_container_repo,
                         UserRepoFragment.newInstance(searchInput),
                         UserProfileFragment.TAG);
@@ -84,9 +85,7 @@ public class MainActivity extends AppCompatActivity {
                     case LOADING:
                         break;
                     case SUCCESS:
-                        if (githubUserResource.data != null) {
-                        } else {
-                        }
+                        navigateToFragment(UserRepoFragment.TAG, searchInput);
                         break;
                     case ERROR:
                         break;

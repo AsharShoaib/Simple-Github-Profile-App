@@ -2,11 +2,8 @@ package com.constraintlayout.githubapp;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.constraintlayout.githubapp.data.GithubViewModel;
 
@@ -47,12 +44,11 @@ public class MainActivity extends AppCompatActivity {
     private void fetchUserRepos(String searchInput) {
         githubViewModel.fetchAndDownloadUserRepo(searchInput).observe(this, githubUserResource -> {
             if (githubUserResource != null) {
-                TextView tv;
                 switch (githubUserResource.status) {
                     case LOADING:
                         break;
                     case SUCCESS:
-                        fragmentTransaction.commit();
+                        navigateToFragment(UserProfileFragment.TAG, searchInput);
                         break;
                     case ERROR:
 
@@ -60,62 +56,49 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void navigateToFragment(String tag, String searchInput) {
+        fragmentTransaction = mFragmentManager.beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                .addToBackStack(null);
+        switch (tag) {
+            case UserProfileFragment.TAG:
+                fragmentTransaction.replace(R.id.fragment_container_user_profile, UserProfileFragment.newInstance(searchInput),
+                        UserProfileFragment.TAG);
+                break;
+            default:
+                fragmentTransaction.replace(R.id.fragment_container_repo,
+                        UserRepoFragment.newInstance(searchInput),
+                        UserProfileFragment.TAG);
+                break;
+        }
+
+        fragmentTransaction.commit();
     }
 
     private void fetchUserProfile(String searchInput) {
         githubViewModel.fetchAndDownloadUser(searchInput).observe(this, githubUserResource -> {
             if (githubUserResource != null) {
-                TextView tv;
                 switch (githubUserResource.status) {
                     case LOADING:
                         break;
                     case SUCCESS:
-//                        tv = findViewById(R.id.textView);
                         if (githubUserResource.data != null) {
-//                            tv.setText(githubUserResource.data.getName());
                         } else {
-//                            tv.setText("Empty");
                         }
                         break;
                     case ERROR:
-//                        tv = findViewById(R.id.textView);
-//                        tv.setText("ERROR");
-
                         break;
                 }
             }
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     private void loadInitialFragment(String searchInput) {
         Fragment initialFragment = UserProfileFragment.newInstance(searchInput);
         fragmentTransaction = mFragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, initialFragment);
+        fragmentTransaction.replace(R.id.fragment_container_user_profile, initialFragment);
     }
 
-    private void performTransition() {
-        // more on this later
-    }
 }

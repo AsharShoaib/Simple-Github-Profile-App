@@ -4,4 +4,5 @@
     <string name="input_hint">Enter a github user id</string>
     <string name="instruction_text">Enter a github user id</string>
     <string name="search_button">Search</string>
+    <string name="AppBarTitle">Take Home</string>
 </resources>

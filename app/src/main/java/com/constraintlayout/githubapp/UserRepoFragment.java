@@ -19,26 +19,26 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 
-public class UserProfileFragment extends Fragment {
+class UserRepoFragment extends Fragment {
 
-    public static final String TAG = "UserProfileFragment";
+    public static final String TAG = "UserRepoFragment";
     private String searchInput;
     private GithubViewModel githubViewModel;
     private LiveData<GithubUser> userProfile;
     private LiveData<List<GithubRepo>> userRepo;
 
-    public UserProfileFragment(String searchInput) {
+    public UserRepoFragment(String searchInput) {
         this.searchInput = searchInput;
     }
 
-    public static UserProfileFragment newInstance(String searchInput) {
-        return new UserProfileFragment(searchInput);
+    public static UserRepoFragment newInstance(String searchInput) {
+        return new UserRepoFragment(searchInput);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.user_profile, container, false);
+        View v = inflater.inflate(R.layout.user_repo, container, false);
         return v;
     }
 

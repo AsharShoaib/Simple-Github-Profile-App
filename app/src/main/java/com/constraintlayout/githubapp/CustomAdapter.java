@@ -21,11 +21,19 @@ class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
     private List<GithubRepo> repos;
     private Context context;
     private LayoutInflater layoutInflater;
+    private ShowRepoInfoListener showRepoInfoListener;
 
-    public CustomAdapter(Context context) {
-        this.repos = new ArrayList<>();;
+    public CustomAdapter(Context context, ShowRepoInfoListener showRepoInfoListener) {
+        this.repos = new ArrayList<>();
+        ;
         this.context = context;
-        this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.layoutInflater =
+                (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.showRepoInfoListener = showRepoInfoListener;
+    }
+
+    public interface ShowRepoInfoListener {
+        void onRepoInfoClicked(GithubRepo githubRepo);
     }
 
     @NonNull
@@ -74,10 +82,8 @@ class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
             if (repo != null) {
                 tvTitle.setText(repo.getName());
                 tvDescription.setText(repo.getDescription());
-                cardView.setOnClickListener(v -> {
-                   //handle click
-                });
-
+                cardView.setOnClickListener(v ->
+                        showRepoInfoListener.onRepoInfoClicked(repo));
             }
         }
     }

@@ -1,7 +1,10 @@
 package com.constraintlayout.githubapp;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -33,12 +36,43 @@ public class MainActivity extends AppCompatActivity {
         searchButton.setOnClickListener(v -> {
             String searchInput = searchText.getText().toString();
             if (!TextUtils.isEmpty(searchInput)) {
-                loadInitialFragment(searchInput);
-                fetchUserProfile(searchInput);
-                fetchUserRepos(searchInput);
+                searchUser(searchInput);
             }
         });
 
+        searchText.setOnEditorActionListener((v, actionId, event) -> {
+            boolean handled = false;
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                String searchInput = searchText.getText().toString();
+                if (!TextUtils.isEmpty(searchInput)) {
+                    searchUser(searchInput);
+                }
+            }
+            return handled;
+        });
+    }
+
+    private void searchUser(String searchInput) {
+        loadInitialFragment(searchInput);
+        fetchUserProfile(searchInput);
+        fetchUserRepos(searchInput);
+        hideKeyboard();
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager inputManager =
+                (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    @Override
+    public void onBackPressed() {
+        //this is to prevent the fragment from diappearing on backpress therefore exiting app on
+        // backpress
+        if (mFragmentManager.getFragments().isEmpty()) {
+            super.onBackPressed();
+        }
     }
 
     private void fetchUserRepos(String searchInput) {
@@ -56,26 +90,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    private void navigateToFragment(String tag, String searchInput) {
-        fragmentTransaction = mFragmentManager.beginTransaction()
-                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                .addToBackStack(null);
-        switch (tag) {
-            case UserProfileFragment.TAG:
-                fragmentTransaction.replace(R.id.fragment_container_user_profile,
-                        UserProfileFragment.newInstance(searchInput),
-                        UserProfileFragment.TAG);
-                break;
-            case UserRepoFragment.TAG:
-                fragmentTransaction.replace(R.id.fragment_container_repo,
-                        UserRepoFragment.newInstance(searchInput),
-                        UserProfileFragment.TAG);
-                break;
-        }
-
-        fragmentTransaction.commit();
     }
 
     private void fetchUserProfile(String searchInput) {
@@ -98,6 +112,26 @@ public class MainActivity extends AppCompatActivity {
         Fragment initialFragment = UserProfileFragment.newInstance(searchInput);
         fragmentTransaction = mFragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container_user_profile, initialFragment);
+    }
+
+    private void navigateToFragment(String tag, String searchInput) {
+        fragmentTransaction = mFragmentManager.beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                .addToBackStack(null);
+        switch (tag) {
+            case UserProfileFragment.TAG:
+                fragmentTransaction.replace(R.id.fragment_container_user_profile,
+                        UserProfileFragment.newInstance(searchInput),
+                        UserProfileFragment.TAG);
+                break;
+            case UserRepoFragment.TAG:
+                fragmentTransaction.replace(R.id.fragment_container_repo,
+                        UserRepoFragment.newInstance(searchInput),
+                        UserProfileFragment.TAG);
+                break;
+        }
+
+        fragmentTransaction.commit();
     }
 
 }

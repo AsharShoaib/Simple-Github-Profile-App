@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class UserRepoFragment extends Fragment {
+public class UserRepoFragment extends Fragment implements CustomAdapter.ShowRepoInfoListener {
 
     public static final String TAG = "UserRepoFragment";
     private String searchInput;
@@ -42,7 +42,7 @@ public class UserRepoFragment extends Fragment {
         recyclerView = v.findViewById(R.id.rv_user_repo);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        adapter = new CustomAdapter(getContext());
+        adapter = new CustomAdapter(getContext(), this);
         recyclerView.setAdapter(adapter);
         return v;
     }
@@ -60,5 +60,12 @@ public class UserRepoFragment extends Fragment {
 
     public void setSearchInput(String searchInput) {
         this.searchInput = searchInput;
+    }
+
+    @Override
+    public void onRepoInfoClicked(GithubRepo githubRepo) {
+        RepoInfoBottomDialogFragment repoInfoBottomDialogFragment =
+                new RepoInfoBottomDialogFragment(githubRepo);
+        repoInfoBottomDialogFragment.show(getFragmentManager(), "show_repo_info_dialog_fragment");
     }
 }
